@@ -49,6 +49,48 @@ class Matrix {
     }
 
 
+    //Row-reduce
+    Matrix rowReduced()
+    {
+        Matrix rowEquivMatrix = new Matrix(rows, cols);
+
+        for(int i = 0; i < rows; i++)
+        {
+            rowEquivMatrix.matrix[i][] = matrix[i][];
+        }
+
+        //Iterating through all rows
+        for(int i = 0; i < rows; i++)
+        {
+            
+            int nonZeroIndex = -1;
+            //Finding the first instance of a non-zero value in the row
+            for(int j = 0; j < cols && nonZeroIndex == -1; j++)
+            {
+                //When the first non-zero value is found, multiply the whole row by its inverse. Now the first non-zero value is one. 
+                if(rowEquivMatrix.matrix[i][j] != 0)
+                {
+                    nonZeroIndex = j;
+                    rowEquivMatrix.matrix[i][] *= (1/rowEquivMatrix.matrix[i][j]);
+                }
+            }
+
+            //Setting the rest of the values in column nonZeroIndex to 0
+            if(nonZeroIndex != -1)
+            {
+                for(int j = 0; j < rows; j++)
+                {
+                    //Skip the current row
+                    if(j != i)
+                    {
+                       rowEquivMatrix.matrix[j][] += (-rowEquivMatrix.matrix[j][nonZeroIndex]) * rowEquivMatrix.matrix[i][];
+                    }
+                }
+            }
+        }
+
+        return rowEquivMatrix;
+    }
 
     //Elementary row operations
     Matrix scalarMult(int row, double scalar)
